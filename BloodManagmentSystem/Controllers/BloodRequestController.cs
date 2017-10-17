@@ -148,7 +148,7 @@ namespace BloodManagmentSystem.Controllers
             {
                 foreach (var confirmation in confirmations)
                 {
-                    var emailBody = templateService.Parse(System.IO.File.ReadAllText(confirmationTemplatePath), confirmation, null, null);
+                    var emailBody = templateService.Parse(System.IO.File.ReadAllText(confirmationTemplatePath), confirmation, null, "ConfirmationEmail");
                     var email = new MailMessage()
                     {
                         Body = emailBody,
