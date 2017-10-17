@@ -142,10 +142,10 @@ namespace BloodManagmentSystem.Controllers
         private async void SendEmails(IEnumerable<Confirmation> confirmations)
         {
             var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Views\Email\templates"); 
-            using (var templateService = new TemplateService())
+            var templateService = new TemplateService();
+            var confirmationTemplatePath = Path.Combine(templateFolderPath, "Confirmation.cshtml");
+            using (var smtpClient = new SmtpClient())
             {
-                var confirmationTemplatePath = Path.Combine(templateFolderPath, "Confirmation.cshtml");
-                var smtpClient = new SmtpClient();
                 foreach (var confirmation in confirmations)
                 {
                     var emailBody = templateService.Parse(System.IO.File.ReadAllText(confirmationTemplatePath), confirmation, null, null);
@@ -159,6 +159,7 @@ namespace BloodManagmentSystem.Controllers
                     await smtpClient.SendMailAsync(email);
                 }
             }
+            
         }
 
         #endregion

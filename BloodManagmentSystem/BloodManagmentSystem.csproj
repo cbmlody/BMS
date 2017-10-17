@@ -265,7 +265,6 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Core\IUnitOfWork.cs" />
     <Compile Include="Core\Models\Confirmation.cs" />
-    <Compile Include="Core\Models\ConfirmationEmail.cs" />
     <Compile Include="Core\Models\Donor.cs" />
     <Compile Include="Core\Repositories\IBloodBankRepository.cs" />
     <Compile Include="Core\Repositories\IConfirmationRepository.cs" />
