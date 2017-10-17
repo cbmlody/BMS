@@ -148,13 +148,19 @@ namespace BloodManagmentSystem.Controllers
             {
                 foreach (var confirmation in confirmations)
                 {
-                    var emailBody = templateService.Parse(System.IO.File.ReadAllText(confirmationTemplatePath), confirmation, null, "ConfirmationEmail");
+                    var emailBody = templateService.Parse(
+                        System.IO.File.ReadAllText(confirmationTemplatePath),
+                        confirmation, 
+                        null, 
+                        "ConfirmationEmail");
+                    
                     var email = new MailMessage()
                     {
                         Body = emailBody,
                         IsBodyHtml = true,
                         Subject = "BMS Confirmation"
                     };
+                    
                     email.To.Add(confirmation.Donor.Email);
                     await smtpClient.SendMailAsync(email);
                 }
