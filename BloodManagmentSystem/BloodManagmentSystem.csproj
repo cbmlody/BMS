@@ -390,7 +390,7 @@
     <Content Include="Views\BloodRequest\Create.cshtml" />
     <Content Include="Views\BloodRequest\Details.cshtml" />
     <Content Include="Views\BloodRequest\Index.cshtml" />
-    <Content Include="Views\Email\templates\Confirmation.cshtml" />
+    <Content Include="Views\Email\Confirmation.cshtml" />
     <Content Include="Views\Donor\Create.cshtml" />
     <Content Include="Views\Account\Info.cshtml" />
   </ItemGroup>

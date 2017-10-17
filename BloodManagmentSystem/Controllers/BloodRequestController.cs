@@ -141,7 +141,7 @@ namespace BloodManagmentSystem.Controllers
 
         private async void SendEmails(IEnumerable<Confirmation> confirmations)
         {
-            var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Views\Email\templates"); 
+            var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Views\Email"); 
             var templateService = new TemplateService();
             var confirmationTemplatePath = Path.Combine(templateFolderPath, "Confirmation.cshtml");
             using (var smtpClient = new SmtpClient())
