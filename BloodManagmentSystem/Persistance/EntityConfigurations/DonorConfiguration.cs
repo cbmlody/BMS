@@ -21,6 +21,9 @@ namespace BloodManagmentSystem.Persistance.EntityConfigurations
 
             Property(d => d.BloodType)
                 .IsRequired();
+
+            Property(d => d.Confirmed)
+                .IsRequired();
         }
     }
 }

@@ -36,7 +36,8 @@ namespace BloodManagmentSystem.Controllers
                 Name = model.Name,
                 Email = model.Email,
                 City = model.City,
-                BloodType = model.BloodType
+                BloodType = model.BloodType,
+                Confirmed = false
             };
 
             _unitOfWork.Donors.Add(donor);

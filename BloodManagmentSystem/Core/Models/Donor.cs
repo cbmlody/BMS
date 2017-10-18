@@ -7,5 +7,6 @@
         public string Email { get; set; }
         public string City { get; set; }
         public BloodType BloodType { get; set; }
+        public bool Confirmed { get; set; }
     }
 }
