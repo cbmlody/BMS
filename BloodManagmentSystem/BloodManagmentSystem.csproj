@@ -257,6 +257,10 @@
     <Compile Include="Persistance\Migrations\201710111457463_UpdateConfirmationTableAfterMerge.Designer.cs">
       <DependentUpon>201710111457463_UpdateConfirmationTableAfterMerge.cs</DependentUpon>
     </Compile>
+    <Compile Include="Persistance\Migrations\201710181505097_AddConfirmationToDonorModel.cs" />
+    <Compile Include="Persistance\Migrations\201710181505097_AddConfirmationToDonorModel.Designer.cs">
+      <DependentUpon>201710181505097_AddConfirmationToDonorModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Persistance\Migrations\Configuration.cs" />
     <Compile Include="Persistance\Migrations\201710040913154_CreateDonor.cs" />
     <Compile Include="Persistance\Migrations\201710040913154_CreateDonor.Designer.cs">
@@ -379,6 +383,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Persistance\Migrations\201710111457463_UpdateConfirmationTableAfterMerge.resx">
       <DependentUpon>201710111457463_UpdateConfirmationTableAfterMerge.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Persistance\Migrations\201710181505097_AddConfirmationToDonorModel.resx">
+      <DependentUpon>201710181505097_AddConfirmationToDonorModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
