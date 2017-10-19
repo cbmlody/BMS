@@ -1,17 +1,23 @@
-﻿using BloodManagmentSystem.Core;
+﻿using System;
+using System.Threading.Tasks;
+using BloodManagmentSystem.Core;
 using BloodManagmentSystem.Core.Models;
 using BloodManagmentSystem.Core.ViewModels;
 using System.Web.Mvc;
+using BloodManagmentSystem.Services;
+using Microsoft.AspNet.Identity;
 
 namespace BloodManagmentSystem.Controllers
 {
     public class DonorController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IIdentityMessageService _emailService;
 
         public DonorController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+            _emailService = new EmailService();
         }
 
         [HttpGet]
@@ -24,7 +30,7 @@ namespace BloodManagmentSystem.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(DonorFormViewModel model)
+        public async Task<ActionResult> Create(DonorFormViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -40,10 +46,44 @@ namespace BloodManagmentSystem.Controllers
                 Confirmed = false
             };
 
-            _unitOfWork.Donors.Add(donor);
-            _unitOfWork.Complete();
+            try
+            {
+                _unitOfWork.Donors.Add(donor);
+                _unitOfWork.Complete();
 
-            return RedirectToAction("Index", "Home");
+                var message = PrepareMessage(donor);
+                if (message == null)
+                {
+                    ViewBag.errorMessage = "Oh noes. Something terrible happened.";
+                    return View("Error");
+                }
+
+                await _emailService.SendAsync(message);
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch
+            {
+                ViewBag.errorMessage = "Uh oh... Something went wrong.";
+                return View("Error");
+            }
         }
+        
+        #region Helpers
+
+        private IdentityMessage PrepareMessage(Donor donor)
+        {
+            if (donor == null) return null;
+            var code = donor.GetHashCode();
+            return new IdentityMessage
+            {
+                Body = TemplateService.RenderTemplate("DonorActivation.cshtml", donor),
+                Subject = "Confirm email",
+                Destination = donor.Email
+            };
+        }
+
+        #endregion
+
     }
 }

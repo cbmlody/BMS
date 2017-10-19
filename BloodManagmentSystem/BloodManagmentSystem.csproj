@@ -288,6 +288,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Persistance\Repositories\BloodRequestRepository.cs" />
     <Compile Include="Core\Repositories\IBloodRequestRepository.cs" />
+    <Compile Include="Services\EmailService.cs" />
+    <Compile Include="Services\TemplateService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Core\ViewModels\BloodRequestFormViewModel.cs" />
   </ItemGroup>
@@ -352,6 +354,7 @@
     <Content Include="Views\Email\Confirmation.cshtml" />
     <Content Include="Views\Donor\Create.cshtml" />
     <Content Include="Views\Account\Info.cshtml" />
+    <Content Include="Views\Email\DonorActivation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
