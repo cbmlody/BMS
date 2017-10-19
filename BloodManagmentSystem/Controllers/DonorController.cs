@@ -68,6 +68,20 @@ namespace BloodManagmentSystem.Controllers
                 return View("Error");
             }
         }
+
+        [HttpPost]
+        public ActionResult Activate(int hashCode)
+        {
+            var donor = _unitOfWork.Donors.GetByHashCode(hashCode);
+            if (donor == null)
+                return View("Error");
+
+            donor.Confirmed = true;
+            _unitOfWork.Donors.Update(donor);
+            _unitOfWork.Complete();
+
+            return RedirectToAction("Index", "Home");
+        }
         
         #region Helpers
 

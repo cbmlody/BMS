@@ -7,5 +7,7 @@ namespace BloodManagmentSystem.Core.Repositories
     {
         IEnumerable<Donor> GetDonorsByBloodType(BloodType type);
         void Add(Donor donor);
+        Donor GetByHashCode(int hashCode);
+        void Update(Donor donor);
     }
 }

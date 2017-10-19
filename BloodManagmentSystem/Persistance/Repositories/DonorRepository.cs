@@ -1,6 +1,7 @@
 ﻿using BloodManagmentSystem.Core.Models;
 using BloodManagmentSystem.Core.Repositories;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 
 namespace BloodManagmentSystem.Persistance.Repositories
@@ -24,6 +25,16 @@ namespace BloodManagmentSystem.Persistance.Repositories
         public void Add(Donor donor)
         {
             _context.Donors.Add(donor);
+        }
+
+        public Donor GetByHashCode(int hashCode)
+        {
+            return _context.Donors.SingleOrDefault(d => d.GetHashCode() == hashCode);
+        }
+
+        public void Update(Donor donor)
+        {
+            _context.Entry(donor).State = EntityState.Modified;
         }
     }
 }
