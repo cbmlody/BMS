@@ -264,9 +264,9 @@
     <Compile Include="Persistance\Migrations\201710181505097_AddConfirmationToDonorModel.Designer.cs">
       <DependentUpon>201710181505097_AddConfirmationToDonorModel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Persistance\Migrations\201710190946360_Test.cs" />
-    <Compile Include="Persistance\Migrations\201710190946360_Test.Designer.cs">
-      <DependentUpon>201710190946360_Test.cs</DependentUpon>
+    <Compile Include="Persistance\Migrations\201710190951476_MakeDonorEmailUnique.cs" />
+    <Compile Include="Persistance\Migrations\201710190951476_MakeDonorEmailUnique.Designer.cs">
+      <DependentUpon>201710190951476_MakeDonorEmailUnique.cs</DependentUpon>
     </Compile>
     <Compile Include="Persistance\Migrations\Configuration.cs" />
     <Compile Include="Persistance\Migrations\201710040913154_CreateDonor.cs" />
@@ -394,8 +394,8 @@
     <EmbeddedResource Include="Persistance\Migrations\201710181505097_AddConfirmationToDonorModel.resx">
       <DependentUpon>201710181505097_AddConfirmationToDonorModel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Persistance\Migrations\201710190946360_Test.resx">
-      <DependentUpon>201710190946360_Test.cs</DependentUpon>
+    <EmbeddedResource Include="Persistance\Migrations\201710190951476_MakeDonorEmailUnique.resx">
+      <DependentUpon>201710190951476_MakeDonorEmailUnique.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
