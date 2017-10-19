@@ -1,12 +1,16 @@
-﻿using BloodManagmentSystem.Core.Models;
+﻿using System;
+using System.IO;
+using BloodManagmentSystem.Core.Models;
 using Bootstrapper;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using RazorEngine.Templating;
 
 namespace BloodManagmentSystem.Controllers
 {
@@ -488,7 +492,7 @@ namespace BloodManagmentSystem.Controllers
             var callbackUrl = Url.Action("ConfirmEmail", "Account",
                 new {userId = userID, code = code}, protocol: Request.Url.Scheme);
             await UserManager.SendEmailAsync(userID, subject,
-                "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                RenderTemplate("RckAccountConfirmation.cshtml", callbackUrl));
 
             return callbackUrl;
         }
@@ -520,6 +524,20 @@ namespace BloodManagmentSystem.Controllers
                 }
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
+        }
+
+        private string RenderTemplate(string template, string callbackUrl)
+        {
+            var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Views\Email");
+            var templateService = new TemplateService();
+            var templatePath = Path.Combine(templateFolderPath, template);
+            dynamic ViewBag = new DynamicViewBag();
+            ViewBag.Callback = callbackUrl;
+            return templateService.Parse(
+                System.IO.File.ReadAllText(templatePath),
+                null,
+                ViewBag,
+                "TemplateCache");
         }
 
         #endregion

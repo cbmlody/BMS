@@ -24,6 +24,7 @@ namespace BloodManagmentSystem
                 {
                     From = new MailAddress("BMS administrator bms.mailingservice@gmail.com"),
                     Body = message.Body,
+                    IsBodyHtml = true,
                     Subject = message.Subject
                 };
                 email.To.Add(message.Destination);

@@ -353,6 +353,7 @@
     <Content Include="Views\Email\Confirmation.cshtml" />
     <Content Include="Views\Donor\Create.cshtml" />
     <Content Include="Views\Account\Info.cshtml" />
+    <Content Include="Views\Email\RckAccountConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
