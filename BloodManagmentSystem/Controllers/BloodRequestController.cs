@@ -1,12 +1,16 @@
-﻿using BloodManagmentSystem.Core;
+﻿using System;
+using BloodManagmentSystem.Core;
 using BloodManagmentSystem.Core.Models;
 using BloodManagmentSystem.Core.ViewModels;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using RazorEngine.Templating;
 
 namespace BloodManagmentSystem.Controllers
 {
@@ -135,13 +139,33 @@ namespace BloodManagmentSystem.Controllers
             return sb.ToString();
         }
 
-        private void SendEmails(IEnumerable<Confirmation> confirmations)
+        private async void SendEmails(IEnumerable<Confirmation> confirmations)
         {
-            foreach (var confirmation in confirmations)
+            var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Views\Email"); 
+            var templateService = new TemplateService();
+            var confirmationTemplatePath = Path.Combine(templateFolderPath, "Confirmation.cshtml");
+            using (var smtpClient = new SmtpClient())
             {
-                var email = new ConfirmationEmail("Confirmation", confirmation);
-                email.SendAsync();
+                foreach (var confirmation in confirmations)
+                {
+                    var emailBody = templateService.Parse(
+                        System.IO.File.ReadAllText(confirmationTemplatePath),
+                        confirmation, 
+                        null, 
+                        "ConfirmationEmail");
+                    
+                    var email = new MailMessage()
+                    {
+                        Body = emailBody,
+                        IsBodyHtml = true,
+                        Subject = "BMS Confirmation"
+                    };
+                    
+                    email.To.Add(confirmation.Donor.Email);
+                    await smtpClient.SendMailAsync(email);
+                }
             }
+            
         }
 
         #endregion

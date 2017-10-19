@@ -1,10 +1,6 @@
-﻿@model BloodManagmentSystem.Core.Models.ConfirmationEmail
-To: @Model.Confirmation.Donor.Email 
-From: bms.mailingsystem@gmail.com 
-Subject: BMS blood request confirmation
+﻿@model BloodManagmentSystem.Core.Models.Confirmation
 
-<html>
-
+<html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Mailing service</title>
@@ -59,22 +55,22 @@ Subject: BMS blood request confirmation
                             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="color: white;">
                                 <tr>
                                     <td>
-                                        <h3 align="center">Cześć @Model.Confirmation.Donor.Name !</h3>
+                                        <h3 align="center">Hello @Model.Donor.Name !</h3>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <p align="center">Dostajesz ten e-mail ponieważ zdecydowałeś się zapisać do BloodDrop.</p>
-                                        <p align="center">W tej chwili potrzebujemy twojej krwi aby uratować komuś życie.</p>
-                                        <p align="center">Wciśnij Pomagam aby dostać szczegóły dotyczące poboru krwi.</p>
-                                        <p align="center">I Pamiętaj: "Don't be afraid to save lifes :)"!</p>
+                                        <p align="center">You are receiving this e-mail because you subscribed to BloodDrop.</p>
+                                        <p align="center">We need your blood to save someone's life.</p>
+                                        <p align="center">Press "I'm in" to receive details about blood donation.</p>
+                                        <p align="center">And don't forget: "Don't be afraid to save lifes :)"!</p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <div align="center" style="padding-top: 30px">
-                                            <form action="http://localhost:59839/BloodRequest/Confirm?hash=@Model.Confirmation.HashCode" method="post">
-                                                <button type="submit" class="btn">Pomagam</button>
+                                            <form action="http://localhost:59839/BloodRequest/Confirm?hash=@Model.HashCode" method="post">
+                                                <button type="submit" class="btn">I'm in!</button>
                                             </form>
                                         </div>
                                     </td>
