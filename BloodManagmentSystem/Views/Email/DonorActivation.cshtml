@@ -67,7 +67,7 @@
                                 <tr>
                                     <td>
                                         <div align="center" style="padding-top: 30px">
-                                            <form action="http://localhost:59839/Donor/Activate?code=@Model.GetHashCode()" method="post">
+                                            <form action="@ViewBag.CallbackUrl" method="post">
                                                 <button type="submit" class="btn">CONFIRM</button>
                                             </form>
                                         </div>

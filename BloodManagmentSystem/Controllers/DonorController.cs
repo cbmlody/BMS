@@ -6,6 +6,8 @@ using BloodManagmentSystem.Core.ViewModels;
 using System.Web.Mvc;
 using BloodManagmentSystem.Services;
 using Microsoft.AspNet.Identity;
+using RazorEngine.Templating;
+using TemplateService = BloodManagmentSystem.Services.TemplateService;
 
 namespace BloodManagmentSystem.Controllers
 {
@@ -88,10 +90,12 @@ namespace BloodManagmentSystem.Controllers
         private IdentityMessage PrepareMessage(Donor donor)
         {
             if (donor == null) return null;
-            var code = donor.GetHashCode();
+            var viewBag = new DynamicViewBag();
+            viewBag.AddValue("CallbackUrl", Url.Action("Activate", "Donor", new { hashCode = donor.GetHashCode() }, protocol: Request.Url.Scheme));
+
             return new IdentityMessage
             {
-                Body = TemplateService.RenderTemplate("DonorActivation.cshtml", donor),
+                Body = TemplateService.RenderTemplate("DonorActivation.cshtml", donor, viewBag),
                 Subject = "Confirm email",
                 Destination = donor.Email
             };
