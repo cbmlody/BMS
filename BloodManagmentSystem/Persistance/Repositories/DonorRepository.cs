@@ -10,6 +10,11 @@ namespace BloodManagmentSystem.Persistance.Repositories
     {
         private readonly ApplicationDbContext _context;
 
+        public Donor Get(int id)
+        {
+            return _context.Donors.SingleOrDefault(d => d.Id == id);
+        }
+
         public DonorRepository(ApplicationDbContext context)
         {
             _context = context;
@@ -25,11 +30,6 @@ namespace BloodManagmentSystem.Persistance.Repositories
         public void Add(Donor donor)
         {
             _context.Donors.Add(donor);
-        }
-
-        public Donor GetByHashCode(int hashCode)
-        {
-            return _context.Donors.SingleOrDefault(d => d.GetHashCode() == hashCode);
         }
 
         public void Update(Donor donor)

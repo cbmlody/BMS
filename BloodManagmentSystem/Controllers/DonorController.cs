@@ -71,18 +71,22 @@ namespace BloodManagmentSystem.Controllers
             }
         }
 
-        [HttpPost]
-        public ActionResult Activate(int hashCode)
+        [HttpGet]
+        public ActionResult Activate(int userId, int code)
         {
-            var donor = _unitOfWork.Donors.GetByHashCode(hashCode);
+            var donor = _unitOfWork.Donors.Get(userId);
             if (donor == null)
+                return HttpNotFound();
+
+            if (donor.GetHashCode() != code)
                 return View("Error");
 
             donor.Confirmed = true;
             _unitOfWork.Donors.Update(donor);
             _unitOfWork.Complete();
 
-            return RedirectToAction("Index", "Home");
+            ViewBag.Message = "Thank you for confirming you email. We are going to contact you as soon as your blood type will be needed.";
+            return View("Info");
         }
         
         #region Helpers
@@ -91,7 +95,7 @@ namespace BloodManagmentSystem.Controllers
         {
             if (donor == null) return null;
             var viewBag = new DynamicViewBag();
-            viewBag.AddValue("CallbackUrl", Url.Action("Activate", "Donor", new { hashCode = donor.GetHashCode() }, protocol: Request.Url.Scheme));
+            viewBag.AddValue("CallbackUrl", Url.Action("Activate", "Donor", new { userId = donor.Id, code = donor.GetHashCode() }, protocol: Request.Url.Scheme));
 
             return new IdentityMessage
             {

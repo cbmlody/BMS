@@ -355,6 +355,7 @@
     <Content Include="Views\Donor\Create.cshtml" />
     <Content Include="Views\Account\Info.cshtml" />
     <Content Include="Views\Email\DonorActivation.cshtml" />
+    <Content Include="Views\Donor\Info.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
