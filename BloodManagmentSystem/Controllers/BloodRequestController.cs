@@ -1,26 +1,27 @@
-﻿using System;
-using BloodManagmentSystem.Core;
+﻿using BloodManagmentSystem.Core;
 using BloodManagmentSystem.Core.Models;
 using BloodManagmentSystem.Core.ViewModels;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using RazorEngine.Templating;
+using BloodManagmentSystem.Services;
+using Microsoft.AspNet.Identity;
 
 namespace BloodManagmentSystem.Controllers
 {
     public class BloodRequestController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private EmailService _emailService;
 
-        public BloodRequestController(IUnitOfWork unitOfWork)
+        public BloodRequestController(IUnitOfWork unitOfWork, EmailService emailService)
         {
             _unitOfWork = unitOfWork;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -81,7 +82,7 @@ namespace BloodManagmentSystem.Controllers
         {
             var request = _unitOfWork.Requests.GetRequest(id);
             if (request == null)
-                return HttpNotFound();
+                return View("Error");
 
             var donors = _unitOfWork.Donors.GetDonorsByBloodType(request.BloodType);
 
@@ -90,7 +91,7 @@ namespace BloodManagmentSystem.Controllers
             _unitOfWork.Confirmations.AddRange(confirmations);
             _unitOfWork.Complete();
 
-            Task.Factory.StartNew(() => SendEmails(confirmations));
+            Task.Factory.StartNew(() => SendEmailsWithRequest(confirmations));
 
             return RedirectToAction("Index");
         }
@@ -112,7 +113,7 @@ namespace BloodManagmentSystem.Controllers
 
         #region PrivateMethods
 
-        private IEnumerable<Confirmation> CreateConfirmations(IEnumerable<Donor> donors, int requestId)
+        private List<Confirmation> CreateConfirmations(IEnumerable<Donor> donors, int requestId)
         {
             return donors.Select(donor => new Confirmation
             {
@@ -139,31 +140,18 @@ namespace BloodManagmentSystem.Controllers
             return sb.ToString();
         }
 
-        private async void SendEmails(IEnumerable<Confirmation> confirmations)
+        private async void SendEmailsWithRequest(IEnumerable<Confirmation> confirmations)
         {
-            var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Views\Email"); 
-            var templateService = new TemplateService();
-            var confirmationTemplatePath = Path.Combine(templateFolderPath, "Confirmation.cshtml");
-            using (var smtpClient = new SmtpClient())
+            foreach (var confirmation in confirmations)
             {
-                foreach (var confirmation in confirmations)
+                var message = new IdentityMessage
                 {
-                    var emailBody = templateService.Parse(
-                        System.IO.File.ReadAllText(confirmationTemplatePath),
-                        confirmation, 
-                        null, 
-                        "ConfirmationEmail");
-                    
-                    var email = new MailMessage()
-                    {
-                        Body = emailBody,
-                        IsBodyHtml = true,
-                        Subject = "BMS Confirmation"
-                    };
-                    
-                    email.To.Add(confirmation.Donor.Email);
-                    await smtpClient.SendMailAsync(email);
-                }
+                    Body = TemplateService.RenderTemplate("Confirmation.cshtml", confirmation),
+                    Destination = confirmation.Donor.Email,
+                    Subject = "BMS Confirmation"
+                };
+
+                await _emailService.SendAsync(message);
             }
             
         }
