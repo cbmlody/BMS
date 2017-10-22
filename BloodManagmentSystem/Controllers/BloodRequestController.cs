@@ -16,7 +16,7 @@ namespace BloodManagmentSystem.Controllers
     public class BloodRequestController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        private EmailService _emailService;
+        private readonly EmailService _emailService;
 
         public BloodRequestController(IUnitOfWork unitOfWork, EmailService emailService)
         {
