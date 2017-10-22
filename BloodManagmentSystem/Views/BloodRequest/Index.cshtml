@@ -6,35 +6,40 @@
 }
 <h2>Blood donation requests</h2>
 
+@Html.ActionLink("Add new", "Create", null, new { @class = "btn btn-success" })
+
 @foreach (var request in Model)
 {
-    <div class="panel panel-default">
-        <!-- Default panel contents -->
-        <div class="panel-heading">
-            <span class="highlight">
-                Request ID: @request.Id
-            </span>
-            <span class="pull-right">
-                <a href="@Url.Action("Details", "BloodRequest", new {id = request.Id})">
-                    Details
+    <div class="voffset-2">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <span class="highlight">
+                    Request ID: @request.Id
+                </span>
+            </div>
+            <div class="panel-body">
+                <p>This blood donation takes place in 
+                    @if (request.City == null)
+                    {
+                        @request.Bank.Name
+                    }
+                    else
+                    {
+                        @request.City
+                    }
+                </p>
+                <a href="@Url.Action("Details", "BloodRequest", new { id = request.Id})">
+                    Show details
                 </a>
-            </span>
+            </div>
+            <!-- List group -->
+            <ul class="list-group">
+                <li class="list-group-item">Donation expiration date:
+                    <span class="highlight">@request.DueDateTime.ToLongDateString()</span> at 
+                    <span class="highlight">@request.DueDateTime.TimeOfDay</span>
+                </li>
+            </ul>
         </div>
-        <div class="panel-body">
-            <p>This blood donation takes place in 
-            @if (request.City == null)
-            {
-                @request.Bank.Name
-            }
-            else
-            {
-                @request.City
-            }
-            </p>
-        </div>
-        <!-- List group -->
-        <ul class="list-group">
-            <li class="list-group-item">Donation expiration date: @request.DueDateTime</li>
-        </ul>
     </div>
 }
