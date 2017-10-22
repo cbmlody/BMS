@@ -7,34 +7,53 @@
 
 @using (Html.BeginForm("Create", "BloodRequest"))
 {
-    @Html.AntiForgeryToken();
-    <div class="form-group">
-        @Html.LabelFor(m => m.BloodType)
-        @Html.EnumDropDownListFor(m => m.BloodType, null, new { @class = "form-control", autofocus = "autofocus"})
-        @Html.ValidationMessageFor(m => m.BloodType)
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <div class="form-group">
+            @Html.LabelFor(m => m.BloodType, new { @class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(m => m.BloodType, null, new { @class = "form-control", autofocus = "autofocus"})
+                @Html.ValidationMessageFor(m => m.BloodType)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.DueDate, new { @class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.DueDate, new { @class="form-control", placeholder="mm/dd/yyyy" })
+                @Html.ValidationMessageFor(m => m.DueDate)    
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Time, new { @class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Time, new { @class = "form-control", placeholder = "hh:mm" })
+                @Html.ValidationMessageFor(m => m.Time)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Bank, new { @class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.Bank, new SelectList(Model.Banks, "Id", "Name"), "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.Bank)
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.City, new { @class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.City)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Submit" class="btn btn-default" />
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.DueDate)
-        @Html.TextBoxFor(m => m.DueDate, new { @class="form-control", placeholder="mm/dd/yyyy" })
-        @Html.ValidationMessageFor(m => m.DueDate)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Time)
-        @Html.TextBoxFor(m => m.Time, new { @class = "form-control", placeholder = "hh:mm" })
-        @Html.ValidationMessageFor(m => m.Time)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.Bank)
-        @Html.DropDownListFor(m => m.Bank, new SelectList(Model.Banks, "Id", "Name"), "", new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Bank)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.City)
-        @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.City)
-    </div>
-    <button type="submit" class="btn btn-default">Submit</button>
 }
+<div>
+    @Html.ActionLink("Back to requests", "Index", "BloodRequest")
+</div>
 
 @section scripts
 {
