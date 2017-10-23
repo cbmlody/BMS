@@ -266,6 +266,10 @@
     <Compile Include="Persistance\Migrations\201710181505097_AddConfirmationToDonorModel.Designer.cs">
       <DependentUpon>201710181505097_AddConfirmationToDonorModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Persistance\Migrations\201710190951476_MakeDonorEmailUnique.cs" />
+    <Compile Include="Persistance\Migrations\201710190951476_MakeDonorEmailUnique.Designer.cs">
+      <DependentUpon>201710190951476_MakeDonorEmailUnique.cs</DependentUpon>
+    </Compile>
     <Compile Include="Persistance\Migrations\Configuration.cs" />
     <Compile Include="Persistance\Migrations\201710040913154_CreateDonor.cs" />
     <Compile Include="Persistance\Migrations\201710040913154_CreateDonor.Designer.cs">
@@ -294,7 +298,7 @@
     <Compile Include="Persistance\Repositories\BloodRequestRepository.cs" />
     <Compile Include="Core\Repositories\IBloodRequestRepository.cs" />
     <Compile Include="Services\EmailService.cs" />
-    <Compile Include="Services\TemplateService.cs" />
+    <Compile Include="Services\RazorTemplateService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Core\ViewModels\BloodRequestFormViewModel.cs" />
   </ItemGroup>
@@ -395,6 +399,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Persistance\Migrations\201710181505097_AddConfirmationToDonorModel.resx">
       <DependentUpon>201710181505097_AddConfirmationToDonorModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Persistance\Migrations\201710190951476_MakeDonorEmailUnique.resx">
+      <DependentUpon>201710190951476_MakeDonorEmailUnique.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
