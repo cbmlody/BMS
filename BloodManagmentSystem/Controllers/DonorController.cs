@@ -1,11 +1,11 @@
 ﻿using BloodManagmentSystem.Core;
 using BloodManagmentSystem.Core.Models;
 using BloodManagmentSystem.Core.ViewModels;
+using BloodManagmentSystem.Services;
 using Microsoft.AspNet.Identity;
 using RazorEngine.Templating;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using BloodManagmentSystem.Services;
 
 namespace BloodManagmentSystem.Controllers
 {
@@ -14,7 +14,7 @@ namespace BloodManagmentSystem.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IIdentityMessageService _emailService;
 
-        public DonorController(IUnitOfWork unitOfWork, IIdentityMessageService emailService)
+        public DonorController(IUnitOfWork unitOfWork, EmailService emailService)
         {
             _unitOfWork = unitOfWork;
             _emailService = emailService;
