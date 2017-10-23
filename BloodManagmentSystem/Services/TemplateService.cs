@@ -1,6 +1,6 @@
-﻿using System;
+﻿using RazorEngine.Templating;
+using System;
 using System.IO;
-using RazorEngine.Templating;
 
 namespace BloodManagmentSystem.Services
 {
@@ -16,7 +16,7 @@ namespace BloodManagmentSystem.Services
                 File.ReadAllText(confirmationTemplatePath),
                 model,
                 viewBag,
-                "TempalteCache"
+                "TemplateCache"
             );
         }
     }
