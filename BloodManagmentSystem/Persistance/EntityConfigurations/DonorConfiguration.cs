@@ -1,4 +1,6 @@
 ﻿using BloodManagmentSystem.Core.Models;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
 
 namespace BloodManagmentSystem.Persistance.EntityConfigurations
@@ -13,13 +15,20 @@ namespace BloodManagmentSystem.Persistance.EntityConfigurations
 
             Property(d => d.Email)
                 .IsRequired()
-                .HasMaxLength(255);
+                .HasMaxLength(255)
+                .HasColumnAnnotation(
+                    IndexAnnotation.AnnotationName, 
+                    new IndexAnnotation(
+                        new IndexAttribute("Email", 1) {IsUnique = true}));
 
             Property(d => d.City)
                 .IsRequired()
                 .HasMaxLength(50);
 
             Property(d => d.BloodType)
+                .IsRequired();
+
+            Property(d => d.Confirmed)
                 .IsRequired();
         }
     }
