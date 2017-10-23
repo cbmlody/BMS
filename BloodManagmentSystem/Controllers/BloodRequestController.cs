@@ -1,15 +1,14 @@
 ﻿using BloodManagmentSystem.Core;
 using BloodManagmentSystem.Core.Models;
 using BloodManagmentSystem.Core.ViewModels;
+using BloodManagmentSystem.Services;
+using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using BloodManagmentSystem.Services;
-using Microsoft.AspNet.Identity;
 
 namespace BloodManagmentSystem.Controllers
 {
@@ -146,7 +145,7 @@ namespace BloodManagmentSystem.Controllers
             {
                 var message = new IdentityMessage
                 {
-                    Body = TemplateService.RenderTemplate("Confirmation.cshtml", confirmation),
+                    Body = RazorTemplateService.RenderTemplate("Confirmation.cshtml", confirmation),
                     Destination = confirmation.Donor.Email,
                     Subject = "BMS Confirmation"
                 };
