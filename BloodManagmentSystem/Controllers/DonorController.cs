@@ -14,7 +14,7 @@ namespace BloodManagmentSystem.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IIdentityMessageService _emailService;
 
-        public DonorController(IUnitOfWork unitOfWork, IIdentityMessageService emailService)
+        public DonorController(IUnitOfWork unitOfWork, EmailService emailService)
         {
             _unitOfWork = unitOfWork;
             _emailService = emailService;
