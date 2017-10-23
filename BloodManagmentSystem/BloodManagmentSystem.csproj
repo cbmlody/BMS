@@ -296,7 +296,7 @@
     <Compile Include="Persistance\Repositories\BloodRequestRepository.cs" />
     <Compile Include="Core\Repositories\IBloodRequestRepository.cs" />
     <Compile Include="Services\EmailService.cs" />
-    <Compile Include="Services\TemplateService.cs" />
+    <Compile Include="Services\RazorTemplateService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Core\ViewModels\BloodRequestFormViewModel.cs" />
   </ItemGroup>

@@ -4,12 +4,12 @@ using System.IO;
 
 namespace BloodManagmentSystem.Services
 {
-    public static class TemplateService
+    public static class RazorTemplateService
     {
         public static string RenderTemplate(string templateName, object model = null, DynamicViewBag viewBag = null)
         {
             var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Views\Email");
-            var templateService = new RazorEngine.Templating.TemplateService();
+            var templateService = new TemplateService();
             var confirmationTemplatePath = Path.Combine(templateFolderPath, templateName);
 
             return templateService.Parse(

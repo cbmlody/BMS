@@ -5,7 +5,7 @@ using Microsoft.AspNet.Identity;
 using RazorEngine.Templating;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using TemplateService = BloodManagmentSystem.Services.TemplateService;
+using BloodManagmentSystem.Services;
 
 namespace BloodManagmentSystem.Controllers
 {
@@ -97,7 +97,7 @@ namespace BloodManagmentSystem.Controllers
 
             return new IdentityMessage
             {
-                Body = TemplateService.RenderTemplate("DonorActivation.cshtml", donor, viewBag),
+                Body = RazorTemplateService.RenderTemplate("DonorActivation.cshtml", donor, viewBag),
                 Subject = "Confirm email",
                 Destination = donor.Email
             };
