@@ -99,6 +99,7 @@ namespace BloodManagmentSystem.Controllers
         public ActionResult Confirm(string hash)
         {
             var confirmation = _unitOfWork.Confirmations.GetByHash(hash);
+            var bank = confirmation.Request.Bank;
             if (confirmation == null)
                 return HttpNotFound();
 

@@ -227,6 +227,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Core\IUnitOfWork.cs" />
+    <Compile Include="Core\Models\BloodRequest.cs" />
     <Compile Include="Core\Models\Confirmation.cs" />
     <Compile Include="Core\Models\Donor.cs" />
     <Compile Include="Core\Repositories\IBloodBankRepository.cs" />
@@ -284,7 +285,6 @@
     <Compile Include="Core\Models\AccountViewModels.cs" />
     <Compile Include="Core\Models\ApplicationDbContext.cs" />
     <Compile Include="Core\Models\BloodBank.cs" />
-    <Compile Include="Core\Models\BloodRequest.cs" />
     <Compile Include="Core\Models\BloodType.cs" />
     <Compile Include="Core\Models\IdentityModels.cs" />
     <Compile Include="Core\Models\ManageViewModels.cs" />
