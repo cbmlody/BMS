@@ -110,7 +110,7 @@ namespace BloodManagmentSystem.Controllers
             {
                 Subject = "BMS Donation details",
                 Destination = confirmation.Donor.Email,
-                Body = RazorTemplateService.RenderTemplate("DonationDetails.cshtml", request)
+                Body = RazorTemplateService.RenderTemplate("DonationDetails.cshtml", model: request)
             };
 
             Task.Run(() => _emailService.SendAsync(message));
@@ -118,7 +118,7 @@ namespace BloodManagmentSystem.Controllers
             _unitOfWork.Confirmations.Update(confirmation);
             _unitOfWork.Complete();
 
-            ViewBag.Message = "Thank you foryour participation in this blood collection!" +
+            ViewBag.Message = "Thank you for your participation in this blood collection!" +
                               "We have sent you email with additional informations.";
 
             return View("Info");

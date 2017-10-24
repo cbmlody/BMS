@@ -366,7 +366,7 @@
     <Content Include="Views\Email\DonorActivation.cshtml" />
     <Content Include="Views\Donor\Info.cshtml" />
     <Content Include="Views\Shared\Info.cshtml" />
-    <Content Include="Views\Email\DonataionDetials.cshtml" />
+    <Content Include="Views\Email\DonationDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
