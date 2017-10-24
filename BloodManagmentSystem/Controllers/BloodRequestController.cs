@@ -104,10 +104,24 @@ namespace BloodManagmentSystem.Controllers
 
             confirmation.Status = true;
 
+            var request = confirmation.Request;
+
+            var message = new IdentityMessage
+            {
+                Subject = "BMS Donation details",
+                Destination = confirmation.Donor.Email,
+                Body = RazorTemplateService.RenderTemplate("DonationDetails.cshtml", request)
+            };
+
+            Task.Run(() => _emailService.SendAsync(message));
+
             _unitOfWork.Confirmations.Update(confirmation);
             _unitOfWork.Complete();
 
-            return RedirectToAction("Index");
+            ViewBag.Message = "Thank you foryour participation in this blood collection!" +
+                              "We have sent you email with additional informations.";
+
+            return View("Info");
         }
 
         #region PrivateMethods

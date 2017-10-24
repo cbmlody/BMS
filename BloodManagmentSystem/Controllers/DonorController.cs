@@ -60,7 +60,9 @@ namespace BloodManagmentSystem.Controllers
 
                 await _emailService.SendAsync(message);
 
-                return RedirectToAction("Index", "Home");
+                ViewBag.Message = "We have sent you activation email. Plesae check you mailbox.";
+
+                return View("Info");
             }
             catch
             {
