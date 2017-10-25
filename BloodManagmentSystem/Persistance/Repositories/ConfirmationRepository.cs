@@ -31,7 +31,10 @@ namespace BloodManagmentSystem.Persistance.Repositories
 
         public Confirmation GetByHash(string hash)
         {
-            return _context.Confirmations.SingleOrDefault(c => c.HashCode.Equals(hash));
+            return _context.Confirmations
+                .Include(c => c.Donor)
+                .Include(c => c.Request.Bank)
+                .SingleOrDefault(c => c.HashCode.Equals(hash));
         }
 
         public void Update(Confirmation confirmation)
