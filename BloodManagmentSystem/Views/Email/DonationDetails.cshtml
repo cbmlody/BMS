@@ -1,0 +1,81 @@
+﻿@model BloodManagmentSystem.Core.Models.BloodRequest
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Mailing service</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+
+        .btn {
+            color: #ee4c50;
+            background: white;
+            border: 1px solid white;
+            padding: 11px 50px;
+            font-weight: bold;
+            margin-right: 15px;
+            transition: 500ms all;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+            .btn:hover {
+                color: white;
+                background: #ea2d32;
+                border-color: white;
+            }
+
+        h2 {
+            padding-top: 15px;
+            text-align: center;
+            line-height: 40px;
+        }
+    </style>
+</head>
+
+<body>
+    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td>
+                <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;">
+                    <tr>
+                        <td bgcolor="#ee4c50" style="color: white;">
+                            <h2>Blood Managment System</h2>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" bgcolor="#ec9597" style="padding: 40px 0 30px 0;" height="10"> <img src="https://image.ibb.co/mdo8EQ/blood_drop.png" alt="Creating Email Magic" width="100" style="display: block;" /> </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ee4c50" style="padding: 40px 30px 40px 30px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="100%" style="color: white;">
+                                <tr>
+                                    <td>
+                                        <h3>Here are some details.</h3>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <p align="center">Donation will take place in @Model.City</p>
+                                        <p align="center">Please visit @Model.Bank.Name to donate your blood.</p>
+                                        <p align="center">The collection ends @Model.DueDateTime.ToLongDateString() at @Model.DueDateTime.TimeOfDay</p>
+                                        <p align="center">Thank you!</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td bgcolor="#ec9597" style="padding: 30px; font-size: 14px; font-weight: bold; color: white"> &copy; BMS, Codecool 2017 </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

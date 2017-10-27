@@ -1,11 +1,11 @@
 ﻿using BloodManagmentSystem.Core;
 using BloodManagmentSystem.Core.Models;
 using BloodManagmentSystem.Core.ViewModels;
+using BloodManagmentSystem.Services;
 using Microsoft.AspNet.Identity;
 using RazorEngine.Templating;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using BloodManagmentSystem.Services;
 
 namespace BloodManagmentSystem.Controllers
 {
@@ -60,7 +60,9 @@ namespace BloodManagmentSystem.Controllers
 
                 await _emailService.SendAsync(message);
 
-                return RedirectToAction("Index", "Home");
+                ViewBag.Message = "We have sent you activation email. Please check you mailbox.";
+
+                return View("Info");
             }
             catch
             {

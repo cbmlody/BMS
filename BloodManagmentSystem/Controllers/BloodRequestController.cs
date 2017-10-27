@@ -1,26 +1,26 @@
-﻿using System;
-using BloodManagmentSystem.Core;
+﻿using BloodManagmentSystem.Core;
 using BloodManagmentSystem.Core.Models;
 using BloodManagmentSystem.Core.ViewModels;
+using BloodManagmentSystem.Services;
+using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
-using RazorEngine.Templating;
 
 namespace BloodManagmentSystem.Controllers
 {
     public class BloodRequestController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly EmailService _emailService;
 
-        public BloodRequestController(IUnitOfWork unitOfWork)
+        public BloodRequestController(IUnitOfWork unitOfWork, EmailService emailService)
         {
             _unitOfWork = unitOfWork;
+            _emailService = emailService;
         }
 
         [HttpGet]
@@ -81,7 +81,7 @@ namespace BloodManagmentSystem.Controllers
         {
             var request = _unitOfWork.Requests.GetRequest(id);
             if (request == null)
-                return HttpNotFound();
+                return View("Error");
 
             var donors = _unitOfWork.Donors.GetDonorsByBloodType(request.BloodType);
 
@@ -90,7 +90,7 @@ namespace BloodManagmentSystem.Controllers
             _unitOfWork.Confirmations.AddRange(confirmations);
             _unitOfWork.Complete();
 
-            Task.Factory.StartNew(() => SendEmails(confirmations));
+            Task.Factory.StartNew(() => SendEmailsWithRequest(confirmations));
 
             return RedirectToAction("Index");
         }
@@ -99,20 +99,35 @@ namespace BloodManagmentSystem.Controllers
         public ActionResult Confirm(string hash)
         {
             var confirmation = _unitOfWork.Confirmations.GetByHash(hash);
+            var bank = confirmation.Request.Bank;
             if (confirmation == null)
                 return HttpNotFound();
 
             confirmation.Status = true;
 
+            var request = confirmation.Request;
+
+            var message = new IdentityMessage
+            {
+                Subject = "BMS Donation details",
+                Destination = confirmation.Donor.Email,
+                Body = RazorTemplateService.RenderTemplate("DonationDetails.cshtml", model: request)
+            };
+
+            Task.Run(() => _emailService.SendAsync(message));
+
             _unitOfWork.Confirmations.Update(confirmation);
             _unitOfWork.Complete();
 
-            return RedirectToAction("Index");
+            ViewBag.Message = "Thank you for your participation in this blood collection!" +
+                              "We have sent you email with additional informations.";
+
+            return View("Info");
         }
 
         #region PrivateMethods
 
-        private IEnumerable<Confirmation> CreateConfirmations(IEnumerable<Donor> donors, int requestId)
+        private List<Confirmation> CreateConfirmations(IEnumerable<Donor> donors, int requestId)
         {
             return donors.Select(donor => new Confirmation
             {
@@ -139,31 +154,18 @@ namespace BloodManagmentSystem.Controllers
             return sb.ToString();
         }
 
-        private async void SendEmails(IEnumerable<Confirmation> confirmations)
+        private async void SendEmailsWithRequest(IEnumerable<Confirmation> confirmations)
         {
-            var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Views\Email"); 
-            var templateService = new TemplateService();
-            var confirmationTemplatePath = Path.Combine(templateFolderPath, "Confirmation.cshtml");
-            using (var smtpClient = new SmtpClient())
+            foreach (var confirmation in confirmations)
             {
-                foreach (var confirmation in confirmations)
+                var message = new IdentityMessage
                 {
-                    var emailBody = templateService.Parse(
-                        System.IO.File.ReadAllText(confirmationTemplatePath),
-                        confirmation, 
-                        null, 
-                        "ConfirmationEmail");
-                    
-                    var email = new MailMessage()
-                    {
-                        Body = emailBody,
-                        IsBodyHtml = true,
-                        Subject = "BMS Confirmation"
-                    };
-                    
-                    email.To.Add(confirmation.Donor.Email);
-                    await smtpClient.SendMailAsync(email);
-                }
+                    Body = RazorTemplateService.RenderTemplate("Confirmation.cshtml", confirmation),
+                    Destination = confirmation.Donor.Email,
+                    Subject = "BMS Confirmation"
+                };
+
+                await _emailService.SendAsync(message);
             }
             
         }

@@ -11,15 +11,18 @@
 
         public override int GetHashCode()
         {
-            int result = 37;
+            unchecked
+            {
+                int result = 37;
 
-            result *= 397;
-            result += Email.GetHashCode();
+                result *= 397;
+                result += Email.GetHashCode();
 
-            result *= 397;
-            result += Name.GetHashCode();
+                result *= 397;
+                result += Name.GetHashCode();
 
-            return result;
+                return result;
+            }
         }
     }
 }

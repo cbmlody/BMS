@@ -11,7 +11,7 @@
             </li>
             @if (this.User.IsInRole("RCK"))
             {
-                <li>@Html.ActionLink("RCK", "Create", "BloodRequest")</li>
+                <li>@Html.ActionLink("RCK", "Index", "BloodRequest")</li>
             }
             <li>
                 <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
