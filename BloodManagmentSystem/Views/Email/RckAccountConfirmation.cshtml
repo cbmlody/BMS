@@ -1,4 +1,6 @@
-﻿<html lang="en">
+﻿@model BloodManagmentSystem.Core.Models.ApplicationUser
+
+<html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Mailing service</title>
@@ -53,7 +55,7 @@
                             <table border="0" cellpadding="0" cellspacing="0" width="100%" style="color: white;">
                                 <tr>
                                     <td>
-                                        <h3 align="center">Hello!</h3>
+                                        <h3 align="center">Hello @Model.Name!</h3>
                                     </td>
                                 </tr>
                                 <tr>
@@ -67,7 +69,7 @@
                                 <tr>
                                     <td>
                                         <div align="center" style="padding-top: 30px">
-                                            <a href=@ViewBag.Callback>
+                                            <a href=@ViewBag.CallbackUrl>
                                                 <button type="submit" class="btn">Activate my account!</button>
                                             </a>
                                         </div>

@@ -10,6 +10,7 @@ using System.Net.Mail;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using BloodManagmentSystem.Services;
 using RazorEngine.Templating;
 
 namespace BloodManagmentSystem.Controllers
@@ -69,7 +70,7 @@ namespace BloodManagmentSystem.Controllers
             {
                 if (!await UserManager.IsEmailConfirmedAsync(user.Id))
                 {
-                    string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account-Resend");
+                    await SendEmailConfirmationTokenAsync(user, "Confirm your account-Resend");
 
                     // Uncomment to debug locally  
                     // ViewBag.Link = callbackUrl;
@@ -176,7 +177,7 @@ namespace BloodManagmentSystem.Controllers
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
-                    string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account");
+                    await SendEmailConfirmationTokenAsync(user, "Confirm your account");
 
                     ViewBag.Message = "Check your email and confirm your account, you must be confirmed "
                                       + "before you can log in.";
@@ -486,15 +487,14 @@ namespace BloodManagmentSystem.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        private async Task<string> SendEmailConfirmationTokenAsync(string userID, string subject)
+        private async Task SendEmailConfirmationTokenAsync(ApplicationUser user, string subject)
         {
-            string code = await UserManager.GenerateEmailConfirmationTokenAsync(userID);
-            var callbackUrl = Url.Action("ConfirmEmail", "Account",
-                new {userId = userID, code = code}, protocol: Request.Url.Scheme);
-            await UserManager.SendEmailAsync(userID, subject,
-                RenderTemplate("RckAccountConfirmation.cshtml", callbackUrl));
+            string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
 
-            return callbackUrl;
+            var viewBag = new DynamicViewBag();
+            viewBag.AddValue("CallbackUrl", Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme));
+            await UserManager.SendEmailAsync(user.Id, subject,
+                RazorTemplateService.RenderTemplate("RckAccountConfirmation.cshtml", user, viewBag));
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult
@@ -525,21 +525,6 @@ namespace BloodManagmentSystem.Controllers
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
         }
-
-        private string RenderTemplate(string template, string callbackUrl)
-        {
-            var templateFolderPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Views\Email");
-            var templateService = new TemplateService();
-            var templatePath = Path.Combine(templateFolderPath, template);
-            dynamic ViewBag = new DynamicViewBag();
-            ViewBag.Callback = callbackUrl;
-            return templateService.Parse(
-                System.IO.File.ReadAllText(templatePath),
-                null,
-                ViewBag,
-                "TemplateCache");
-        }
-
         #endregion
     }
 }
