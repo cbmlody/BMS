@@ -33,6 +33,13 @@
             }
         </table>
     </div>
+    @if (@ViewBag.Alert != null)
+    {
+        <div class="alert alert-info alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Info!</strong> @ViewBag.Alert
+        </div>
+    }
     <div>
         @Html.ActionLink("Send Email", "Notify", new {id = Model.Request.Id}, new {@class = "btn btn-success"})
     </div>
@@ -40,4 +47,3 @@
         @Html.ActionLink("Back", "Index", "BloodRequest")
     </div>
 </div>
-
