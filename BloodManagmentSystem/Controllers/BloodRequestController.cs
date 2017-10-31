@@ -4,6 +4,7 @@ using BloodManagmentSystem.Core.ViewModels;
 using BloodManagmentSystem.Services;
 using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -74,25 +75,36 @@ namespace BloodManagmentSystem.Controllers
                 Donors = _unitOfWork.Donors.GetDonorsByBloodType(request.BloodType)
             };
 
+            ViewBag.Alert = TempData["Alert"];
+
             return View(requestDetails);
         }
 
         public ActionResult Notify(int id)
         {
-            var request = _unitOfWork.Requests.GetRequest(id);
-            if (request == null)
-                return View("Error");
+            try
+            {
+                var request = _unitOfWork.Requests.GetRequest(id);
+                if (request == null)
+                    return View("Error");
 
-            var donors = _unitOfWork.Donors.GetDonorsByBloodType(request.BloodType);
+                var donors = _unitOfWork.Donors.GetDonorsByBloodType(request.BloodType);
 
-            var confirmations = CreateConfirmations(donors, id);
+                var confirmations = CreateConfirmations(donors, id);
 
-            _unitOfWork.Confirmations.AddRange(confirmations);
-            _unitOfWork.Complete();
+                _unitOfWork.Confirmations.AddRange(confirmations);
+                _unitOfWork.Complete();
 
-            Task.Factory.StartNew(() => SendEmailsWithRequest(confirmations));
+                Task.Factory.StartNew(() => SendEmailsWithRequest(confirmations));
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            catch (DbUpdateException ex)
+            {
+                TempData["Alert"] = "Emails have already been sent";
+                return RedirectToAction("Details", new { id=id });
+            }
+            
         }
 
         [HttpPost]
